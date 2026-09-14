@@ -1,0 +1,1295 @@
+# AGRISMART AI — MASTER PROJECT SPECIFICATION
+
+## 1. PROJECT OVERVIEW
+
+Build a production-quality, modular, responsive web application called:
+
+**AgriSmart AI — Intelligent Agriculture for a Sustainable Future**
+
+The goal is to create an AI-powered agriculture advisory platform that helps farmers detect crop diseases and make better decisions about crops, irrigation, weather, sustainability, crop stress, crop rotation, and expected water/yield outcomes.
+
+This is an academic/internal hackathon project. It should be technically strong and visually polished, but it must remain realistic and implementable by a student team using AI coding assistance.
+
+Do NOT over-engineer the project unnecessarily.
+
+The priority order is:
+
+1. Correct and reproducible core ML
+2. Strong backend architecture
+3. Correct API integration
+4. Responsive and professional frontend
+5. Meaningful bonus modules
+6. Innovation features
+7. Gemini-powered farmer assistance
+8. Agentic decision-making
+9. Testing, documentation, deployment and demo quality
+
+The system must be modular so that one feature can be developed, tested and improved without breaking the other features.
+
+---
+
+# 2. FINAL FEATURE SCOPE
+
+## MANDATORY CORE
+
+### 1. Crop Disease Detection
+
+The user uploads a crop/leaf image.
+
+The system must:
+
+* Accept an image
+* Preprocess the image
+* Run the trained computer-vision model
+* Predict the disease class or healthy class
+* Return confidence
+* Display the result clearly
+* Provide basic precautionary guidance
+* Provide appropriate uncertainty handling
+
+The disease model must be independent from Gemini.
+
+Gemini must NOT replace the disease-classification model.
+
+Architecture:
+
+Image
+→ preprocessing
+→ trained CV model
+→ disease prediction
+→ confidence
+→ precaution/recommendation layer
+→ frontend
+
+The core must support a required prediction interface such as:
+
+predict(image_path) → class_label
+
+or an equivalent documented CLI/API.
+
+The model must be evaluated honestly.
+
+Do not train on the organizers' held-out judging test set.
+
+The primary metric is macro-F1 on the held-out field-condition test set.
+
+Also report:
+
+* Confusion matrix
+* Per-class precision
+* Per-class recall
+* Accuracy where appropriate
+* Baseline comparison
+* Limitations/failure cases
+
+The challenge intentionally tests generalization from laboratory-style training images to field-condition images. Therefore, focus on generalization rather than artificially maximizing training accuracy.
+
+---
+
+# 3. SELECTED PDF BONUS MODULES
+
+## 2. Crop Recommendation
+
+Purpose:
+
+"What crop should I grow?"
+
+Inputs may include:
+
+* Soil type
+* Soil pH
+* Temperature
+* Humidity
+* Rainfall
+* Water availability
+* Season
+* Location
+* Previous crop
+
+Output:
+
+* Recommended crop
+* Alternative crops
+* Suitability score
+* Explanation
+* Relevant input factors
+
+Use a proper ML model or reproducible recommendation logic.
+
+Document:
+
+* Dataset/source
+* Features
+* Model/logic
+* Evaluation metric
+* Limitations
+
+---
+
+## 3. Smart Irrigation
+
+Purpose:
+
+"When should I irrigate?"
+
+Inputs:
+
+* Soil moisture
+* Weather/forecast
+* Crop type
+* Growth stage
+* Temperature
+* Other relevant farm conditions
+
+Output:
+
+* Irrigation required / not required
+* Recommended timing
+* Optional estimated water requirement
+* Reason
+
+Example:
+
+"Delay irrigation — rainfall is likely within the next 24 hours."
+
+The backend must make the decision.
+
+Do not make the frontend display hardcoded fake results.
+
+---
+
+## 4. Weather-Based Intelligence
+
+Purpose:
+
+"What should I do because of the current/forecast weather?"
+
+Integrate weather information with farm conditions.
+
+Possible actions:
+
+* Delay irrigation because of expected rain
+* Monitor increased disease risk
+* Warn about heat stress
+* Suggest irrigation before a hot/dry period
+* Warn about unfavorable conditions
+
+The weather provider/source must be documented.
+
+Use a clean weather service abstraction so that the weather API can be replaced later if necessary.
+
+---
+
+## 5. Sustainability Score
+
+Generate an indicative sustainability score based on factors such as:
+
+* Water efficiency
+* Resource usage
+* Crop health
+* Irrigation decisions
+* Other relevant measurable factors
+
+Example:
+
+Sustainability Score: 82/100
+
+Then explain:
+
+* What improved the score
+* What reduced the score
+* How the farmer can improve it
+
+The exact formula/rules must be documented and reproducible.
+
+Do not invent meaningless AI-generated scores.
+
+---
+
+## 6. Farmer Assistant — Gemini
+
+Use Gemini as the conversational AI layer.
+
+Gemini should help the farmer understand the results produced by the system.
+
+Gemini can:
+
+* Explain disease results in simple language
+* Explain irrigation recommendations
+* Explain crop recommendations
+* Explain weather risks
+* Explain sustainability scores
+* Answer agriculture-related questions
+* Summarize the farm's current situation
+* Give farmer-friendly recommendations
+
+IMPORTANT:
+
+Gemini should receive structured information from our backend.
+
+Example:
+
+Disease Model:
+Tomato Late Blight
+Confidence:
+0.94
+
+Soil:
+Loamy
+pH:
+6.5
+Moisture:
+31%
+
+Weather:
+Rain probability 75%
+
+Then Gemini generates a farmer-friendly explanation.
+
+Do NOT allow Gemini to independently invent model predictions.
+
+Prefer grounded answers over unsupported free-form answers.
+
+The Gemini integration must be isolated behind a backend service so the API key is never exposed in the frontend.
+
+---
+
+## 7. Agentic Advisor
+
+Build a genuine agentic decision layer rather than simply renaming a chatbot as an "agent."
+
+The agent should:
+
+1. Collect relevant farm inputs
+2. Check weather/data
+3. Analyze current conditions
+4. Apply relevant models/rules
+5. Reason about possible actions
+6. Select an action
+7. Generate a recommendation
+8. Notify/display the recommendation
+9. Record the decision/reason
+
+Example:
+
+Soil moisture = low
++
+Rain probability = high
++
+Weather forecast = rain expected
+
+Agent:
+
+→ checks irrigation requirement
+→ checks weather
+→ reasons that irrigation can be delayed
+→ creates recommendation
+→ notifies farmer
+
+Show the decision loop clearly in the UI.
+
+Keep the agent architecture controlled and explainable.
+
+Do not create unnecessary autonomous behavior that cannot be tested.
+
+---
+
+# 4. EXTRA INNOVATION FEATURES
+
+## 8. Early Crop-Stress Warning
+
+Identify possible crop stress using available signals such as:
+
+* Crop health/disease result
+* Weather conditions
+* Temperature
+* Humidity
+* Soil moisture
+* Other available farm data
+
+Output:
+
+* Stress level
+* Possible reason
+* Warning
+* Recommended action
+
+Example:
+
+"Moderate heat stress risk detected. Consider monitoring soil moisture and avoiding unnecessary irrigation during peak heat."
+
+Clearly distinguish prediction/risk from certainty.
+
+---
+
+## 9. AI Crop-Rotation Recommendation
+
+Recommend what crop could be planted next based on:
+
+* Current/previous crop
+* Soil information
+* Crop history
+* Nutrient/resource considerations
+* Season
+* Farm conditions
+
+Output:
+
+* Recommended next crop
+* Reason
+* Expected benefits
+* Possible limitations
+
+This should complement the Crop Recommendation module rather than duplicate it.
+
+Crop Recommendation:
+"What should I grow?"
+
+Crop Rotation:
+"What should I grow next considering what I already grew?"
+
+---
+
+## 10. Water-Consumption / Yield Prediction
+
+Provide an estimated prediction using available farm information.
+
+Possible outputs:
+
+* Estimated water consumption
+* Estimated yield
+* Expected range rather than false precision
+* Important influencing factors
+
+Use ML/predictive analytics where appropriate.
+
+Clearly label predictions as estimates.
+
+Do not present predictions as guaranteed results.
+
+---
+
+# 5. FRONTEND REQUIREMENTS
+
+Build a modern, professional and fully responsive frontend.
+
+Technology preference:
+
+* React
+* Modern component-based architecture
+* Clean CSS/UI system
+* Responsive layouts
+* Reusable components
+* Proper loading/error/empty states
+
+The UI should work well on:
+
+* Desktop
+* Laptop
+* Tablet
+* Mobile
+
+Do NOT design only for desktop.
+
+---
+
+# 6. FRONTEND STRUCTURE
+
+Create a main dashboard with navigation such as:
+
+Dashboard
+Disease Detection
+Crop Recommendation
+Smart Irrigation
+Weather Intelligence
+Sustainability
+Farmer Assistant
+AI Advisor
+Crop Stress
+Crop Rotation
+Water & Yield
+
+The frontend should feel like one unified agriculture platform rather than ten unrelated mini-projects.
+
+---
+
+# 7. DASHBOARD
+
+The dashboard should provide an overview of the farm.
+
+Possible sections:
+
+* Current weather
+* Crop health
+* Latest disease detection
+* Irrigation status
+* Sustainability score
+* Crop-stress warning
+* AI recommendations
+* Recent activity
+
+Example:
+
+AGRI SMART AI
+
+Good morning
+
+Farm Overview
+
+Crop Health
+Healthy / At Risk
+
+Weather
+28°C
+Rain probability 72%
+
+Irrigation
+Delayed — Rain Expected
+
+Sustainability
+82/100
+
+AI Alert
+Tomato disease detected. Monitor affected leaves.
+
+The dashboard must use real backend/API data once modules are connected.
+
+---
+
+# 8. DISEASE DETECTION UI
+
+Create a strong upload experience.
+
+Example:
+
+Upload Crop Image
+
+[ Drag & Drop Image ]
+
+or
+
+[ Choose Image ]
+
+Then:
+
+Selected Image
+↓
+Analyze Crop
+
+Show a loading state during inference.
+
+Result card:
+
+Disease Detected
+Tomato Late Blight
+
+Confidence
+94%
+
+Severity
+if supported
+
+Precaution
+...
+
+Recommended Actions
+...
+
+The UI should communicate uncertainty honestly.
+
+Do not make the interface claim 100% certainty.
+
+---
+
+# 9. FORM DESIGN
+
+Use reusable form components.
+
+Inputs should have:
+
+* Labels
+* Units
+* Helpful descriptions
+* Validation
+* Sensible defaults where appropriate
+* Error messages
+
+Example:
+
+Soil Moisture
+[ 31 ] %
+
+Temperature
+[ 28 ] °C
+
+Soil pH
+[ 6.5 ]
+
+Rain Probability
+[ 75 ] %
+
+Do not ask the farmer for unnecessary information.
+
+---
+
+# 10. ALERT SYSTEM
+
+Create a reusable notification/alert system.
+
+Types:
+
+* Success
+* Warning
+* Error
+* Information
+* AI Recommendation
+* Critical farm warning
+
+Example:
+
+⚠ Irrigation Delayed
+
+Rain is expected within the next 24 hours.
+The AI recommends delaying irrigation.
+
+Alerts must be generated from backend decisions where appropriate.
+
+Do not hardcode fake alerts.
+
+---
+
+# 11. RESPONSIVE DESIGN
+
+Use a responsive layout from the beginning.
+
+Recommended approach:
+
+Desktop:
+Sidebar + main content
+
+Tablet:
+Collapsible sidebar
+
+Mobile:
+Top bar / bottom navigation / collapsible menu
+
+Cards should adapt automatically.
+
+Forms should become single-column on small screens.
+
+Tables should become responsive cards or horizontally scroll when necessary.
+
+Charts must resize correctly.
+
+Never allow important content to overflow horizontally.
+
+---
+
+# 12. BACKEND ARCHITECTURE
+
+Prefer a Python backend such as:
+
+FastAPI
+
+Organize backend modules separately.
+
+Example:
+
+backend/
+app/
+main.py
+
+```
+    api/
+        disease.py
+        crop.py
+        irrigation.py
+        weather.py
+        sustainability.py
+        assistant.py
+        advisor.py
+        stress.py
+        rotation.py
+        prediction.py
+
+    services/
+        disease_service.py
+        crop_service.py
+        irrigation_service.py
+        weather_service.py
+        sustainability_service.py
+        gemini_service.py
+        agent_service.py
+        stress_service.py
+        rotation_service.py
+        prediction_service.py
+
+    models/
+    schemas/
+    utils/
+    config/
+
+model/
+    training/
+    inference/
+    weights/
+
+tests/
+```
+
+Do not put all logic inside one Python file.
+
+---
+
+# 13. API DESIGN
+
+Create clean REST APIs.
+
+Example:
+
+POST /api/disease/predict
+
+POST /api/crop/recommend
+
+POST /api/irrigation/analyze
+
+GET /api/weather
+
+POST /api/sustainability/score
+
+POST /api/assistant/chat
+
+POST /api/advisor/analyze
+
+POST /api/stress/analyze
+
+POST /api/rotation/recommend
+
+POST /api/prediction/water-yield
+
+Use consistent request/response formats.
+
+Example:
+
+{
+"success": true,
+"data": {},
+"message": "..."
+}
+
+Handle errors consistently.
+
+---
+
+# 14. DATABASE
+
+Use a database only where it provides real value.
+
+Store useful information such as:
+
+* Farmer/farm profile if implemented
+* Crop information
+* Analysis history
+* Disease detection history
+* Irrigation recommendations
+* AI recommendations
+* Sustainability scores
+* Agent decisions
+
+Do not add unnecessary database complexity.
+
+Use a simple development database first and make it easy to replace/deploy later.
+
+---
+
+# 15. CORE ML DEVELOPMENT
+
+Build the disease model BEFORE trying to integrate every other feature.
+
+Recommended approach:
+
+1. Inspect the provided dataset
+2. Understand classes
+3. Create honest train/validation split
+4. Preprocess images
+5. Use transfer learning
+6. Train baseline
+7. Evaluate validation performance
+8. Improve generalization
+9. Evaluate correctly
+10. Build inference function
+11. Save model weights
+12. Connect inference to backend
+13. Test with new images
+
+Potential architectures may include an appropriate pretrained CNN or ViT backbone.
+
+Choose based on:
+
+* Accuracy/generalization
+* Training resources
+* Inference speed
+* Ease of deployment
+
+Do not choose an unnecessarily huge model just because it sounds advanced.
+
+---
+
+# 16. DATA LEAKAGE RULE
+
+Never train on the organizers' held-out judging dataset.
+
+The core challenge evaluates the model on an unseen field-condition test set.
+
+Do not use the held-out test set for:
+
+* Training
+* Fine-tuning
+* Hyperparameter selection
+* Manual optimization based on labels
+
+Document the split honestly.
+
+---
+
+# 17. MODEL EVALUATION
+
+For the core disease detector, report:
+
+* Macro-F1
+* Confusion matrix
+* Per-class precision
+* Per-class recall
+* Accuracy as supplementary information
+* Baseline comparison
+* Failure cases
+
+Macro-F1 is the primary metric.
+
+Do not optimize only for raw accuracy.
+
+The project should prioritize field-image generalization.
+
+---
+
+# 18. SECURITY
+
+Never expose secrets in React.
+
+API keys such as the Gemini key must stay on the backend.
+
+Use:
+
+.env
+
+for secrets.
+
+Do not commit:
+
+.env
+
+to GitHub.
+
+Provide:
+
+.env.example
+
+instead.
+
+---
+
+# 19. ERROR HANDLING
+
+Every major feature must handle:
+
+* Missing input
+* Invalid input
+* API failure
+* Model failure
+* Timeout
+* Empty result
+* Network error
+* Gemini unavailable
+* Weather API unavailable
+
+The frontend should show useful messages instead of crashing.
+
+Example:
+
+"We couldn't retrieve weather data right now. Please try again."
+
+The disease detector should continue working even if Gemini or weather services are unavailable.
+
+---
+
+# 20. MODULARITY PRINCIPLE
+
+The core disease detector must remain independent.
+
+Architecture:
+
+Leaf Image
+↓
+Disease ML Service
+↓
+Disease Result
+↓
+Recommendation / Decision Layer
+↓
+Weather + Farm Data + Other Models
+↓
+Gemini / Agentic Advisor
+↓
+Frontend
+
+If Gemini fails:
+
+Disease detection should still work.
+
+If weather API fails:
+
+Disease detection should still work.
+
+If sustainability calculation fails:
+
+Disease detection should still work.
+
+Do not create one giant chain where failure of one optional module breaks the whole application.
+
+---
+
+# 21. DEVELOPMENT ORDER
+
+Do NOT build all features simultaneously.
+
+Build in phases.
+
+## PHASE 1 — PROJECT FOUNDATION
+
+Create:
+
+* Git repository
+* React frontend
+* Python/FastAPI backend
+* Database setup
+* Environment configuration
+* Folder structure
+* API structure
+* Basic responsive layout
+* Navigation
+* Dashboard shell
+* Error handling foundation
+
+Do not build advanced AI yet.
+
+---
+
+## PHASE 2 — CORE DISEASE MODEL
+
+Complete:
+
+* Dataset preparation
+* Training
+* Validation
+* Model selection
+* Evaluation
+* Macro-F1
+* Confusion matrix
+* Inference function
+* Saved weights
+
+This is the highest priority.
+
+---
+
+## PHASE 3 — DISEASE BACKEND
+
+Create:
+
+POST /api/disease/predict
+
+Connect:
+
+Frontend
+→ Backend
+→ ML model
+→ Result
+→ Frontend
+
+Make this completely functional before continuing.
+
+---
+
+## PHASE 4 — DISEASE FRONTEND POLISH
+
+Add:
+
+* Image upload
+* Preview
+* Loading state
+* Result card
+* Confidence
+* Precautions
+* Error states
+* History if available
+* Responsive design
+
+At this point we already have a working MVP.
+
+---
+
+## PHASE 5 — CROP RECOMMENDATION
+
+Implement:
+
+Model/logic
+→ Backend API
+→ React form
+→ Recommendation result
+→ Explanation
+
+Test independently.
+
+---
+
+## PHASE 6 — WEATHER + IRRIGATION
+
+Build:
+
+Weather service
++
+Irrigation logic/model
+
+Then integrate them.
+
+Example:
+
+Weather forecast
++
+Soil moisture
++
+Crop
++
+Growth stage
+↓
+Irrigation decision
+
+---
+
+## PHASE 7 — SUSTAINABILITY
+
+Create reproducible scoring logic.
+
+Connect it to:
+
+* Water usage
+* Irrigation decisions
+* Crop health
+* Resource factors
+
+Display:
+
+Score
++
+Breakdown
++
+Improvement suggestions
+
+---
+
+## PHASE 8 — EXTRA INNOVATION
+
+Add:
+
+* Crop stress warning
+* Crop rotation recommendation
+* Water/yield prediction
+
+Only add each feature after it can independently work.
+
+---
+
+## PHASE 9 — GEMINI FARMER ASSISTANT
+
+Add Gemini after the structured backend data exists.
+
+Gemini should consume verified system outputs.
+
+Do not let Gemini become the source of truth for ML predictions.
+
+---
+
+## PHASE 10 — AGENTIC ADVISOR
+
+Connect:
+
+Farm Data
++
+Weather
++
+Disease
++
+Irrigation
++
+Sustainability
++
+Stress
+↓
+Agent reasoning
+↓
+Action
+↓
+Notification
+↓
+Decision history
+
+Show the reasoning/decision loop in a simple understandable way.
+
+---
+
+# 22. FINAL DASHBOARD EXPERIENCE
+
+The final user experience should feel like:
+
+Farmer opens AgriSmart AI
+↓
+Sees farm overview
+↓
+Uploads leaf image
+↓
+Disease is detected
+↓
+Farmer enters/updates farm conditions
+↓
+Crop recommendation is available
+↓
+Weather is checked
+↓
+Irrigation recommendation is generated
+↓
+Sustainability score is updated
+↓
+Crop stress is evaluated
+↓
+Crop rotation advice is generated
+↓
+Water/yield prediction is shown
+↓
+Gemini explains everything in simple language
+↓
+Agentic Advisor produces actionable recommendations
+
+The platform should feel like ONE intelligent agricultural assistant.
+
+---
+
+# 23. FRONTEND DESIGN PRINCIPLES
+
+The UI should be:
+
+* Modern
+* Clean
+* Professional
+* Farmer-friendly
+* Responsive
+* Easy to understand
+* Not overloaded
+* Visually consistent
+
+Avoid:
+
+* Excessive animations
+* Unnecessary gradients
+* Too many colors
+* Tiny text
+* Overcrowded dashboards
+* Fake statistics
+* Decorative elements that reduce usability
+
+Prioritize clarity over visual complexity.
+
+---
+
+# 24. BACKEND QUALITY PRINCIPLES
+
+Backend must be:
+
+* Modular
+* Testable
+* Documented
+* Error-tolerant
+* Secure
+* Reproducible
+* Easy to extend
+
+Every module should have:
+
+Input
+→ Validation
+→ Processing
+→ Model/Logic
+→ Output
+→ Error handling
+
+---
+
+# 25. TESTING
+
+Test each module independently.
+
+At minimum test:
+
+* Disease prediction
+* Invalid image
+* Crop recommendation inputs
+* Irrigation edge cases
+* Weather API failure
+* Sustainability calculations
+* Gemini unavailable
+* Agent decision logic
+* API validation
+* Responsive UI
+
+Then perform integration testing.
+
+---
+
+# 26. PERFORMANCE
+
+Do not sacrifice correctness for unnecessary optimization.
+
+Use:
+
+* Model caching/loading once
+* Efficient image preprocessing
+* API timeouts
+* Async operations where appropriate
+* Lazy loading where useful
+* Frontend code splitting where useful
+
+Keep inference reasonably fast.
+
+---
+
+# 27. REPRODUCIBILITY
+
+A judge should be able to understand and run the core project from the README.
+
+Repository should contain:
+
+/README.md
+/src or /app
+/model
+/report
+/requirements.txt or environment file
+
+Document:
+
+* Setup
+* Dataset
+* Model
+* Training
+* Inference
+* Metrics
+* API
+* Frontend
+* Environment variables
+* Limitations
+* Demo
+
+The core prediction should be reproducible quickly.
+
+---
+
+# 28. GITHUB QUALITY
+
+Use meaningful commits.
+
+Do not copy an entire public notebook or project.
+
+Open-source libraries, pretrained models and public datasets may be used, but cite them.
+
+Clearly state third-party dependencies and references.
+
+AI coding assistants may be used, but the final working system must be understood, tested and evaluated by the team.
+
+---
+
+# 29. DEMO STRATEGY
+
+Prepare a 3–5 minute demo.
+
+Suggested flow:
+
+1. Introduce problem
+2. Open AgriSmart dashboard
+3. Upload real crop image
+4. Show disease prediction
+5. Enter farm conditions
+6. Show crop recommendation
+7. Show weather
+8. Show irrigation decision
+9. Show sustainability score
+10. Show crop-stress warning
+11. Show crop rotation
+12. Show water/yield prediction
+13. Ask Gemini
+14. Trigger/show Agentic Advisor
+15. Explain impact
+
+Do not spend most of the demo showing code.
+
+Show the working system.
+
+---
+
+# 30. IMPORTANT AI DEVELOPMENT RULE
+
+AI coding assistants should be used as development partners, not as uncontrolled autonomous developers.
+
+For every generated feature:
+
+1. Understand the code
+2. Run it
+3. Test it
+4. Verify its output
+5. Fix errors
+6. Connect it properly
+7. Document it
+
+Do not blindly accept generated code.
+
+Do not create features merely because they sound advanced.
+
+A smaller number of correctly implemented features is better than many broken features.
+
+---
+
+# 31. FINAL SUCCESS CRITERIA
+
+The project is considered successful only when:
+
+* Core disease detection works
+* Core evaluation is honest
+* Macro-F1 is reported
+* Confusion matrix exists
+* Prediction interface works
+* Backend APIs work
+* Frontend is responsive
+* Modules are integrated
+* Gemini works securely through backend
+* Agentic Advisor demonstrates an actual decision loop
+* Innovation features produce meaningful outputs
+* Errors are handled
+* README is complete
+* Model report is complete
+* Demo is polished
+* No critical feature depends unnecessarily on another optional feature
+
+Most importantly:
+
+**Do not sacrifice core disease-model quality for feature quantity.**
+
+The final system should demonstrate depth, correctness, reproducibility, innovation and farmer usability rather than simply having many buttons.
+
+END OF PROJECT SPECIFICATION

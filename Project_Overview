@@ -1,0 +1,950 @@
+# AgriSmart AI — Intelligent Agriculture for a Sustainable Future
+
+## 1. Project Overview
+
+AgriSmart AI is an AI-powered smart agriculture platform designed to help farmers make better decisions related to crop health, disease detection, crop selection, irrigation, weather conditions, sustainability, and farm management.
+
+The project is being developed for the SIH 2026 Internal Hackathon problem statement:
+
+**“AgriSmart AI – Intelligent Agriculture for a Sustainable Future.”**
+
+The system should start with a mandatory AI-powered crop disease detection system and then extend into a broader intelligent agriculture advisory platform.
+
+The overall goal is:
+
+**Detect crop diseases → understand farm conditions → provide useful recommendations → explain them clearly → continuously analyse conditions → help the farmer make better and more sustainable decisions.**
+
+The system should be practical, modular, farmer-friendly, reproducible, and suitable for demonstration through a web application.
+
+---
+
+# 2. Core Problem
+
+Agriculture faces problems such as:
+
+* Crop diseases
+* Water scarcity
+* Inefficient irrigation
+* Unpredictable weather
+* Soil-related issues
+* Excessive use of water, fertilizers, and pesticides
+* Difficulty in making data-driven farming decisions
+
+AgriSmart AI aims to use:
+
+* Computer Vision
+* Machine Learning
+* Generative AI
+* Predictive Analytics
+* Weather Data
+
+to provide an integrated intelligent agriculture solution.
+
+IoT is intentionally NOT included in our implementation because physical sensor hardware is not necessary for our project.
+
+---
+
+# 3. Most Important Requirement — Mandatory Core
+
+The mandatory core feature is:
+
+## AI Crop Disease Detection
+
+The user should be able to upload a leaf/crop image.
+
+The trained Computer Vision model should:
+
+1. Accept the image.
+2. Preprocess the image.
+3. Identify the crop/disease class.
+4. Predict whether the crop is healthy or affected by a disease.
+5. Return the predicted disease/class.
+6. Return a confidence score.
+7. Display basic precautionary guidance.
+8. Work on a single new image without manual intervention.
+
+The official challenge requires a trained model, honest train/validation/test methodology, macro-F1, confusion matrix, and a working prediction interface. Missing this core feature makes the submission incomplete.
+
+---
+
+# 4. Core Dataset & Evaluation
+
+The core disease model must be designed around the organizers' provided dataset and evaluation protocol.
+
+Training/validation data is based on PlantVillage-style laboratory images.
+
+The held-out judging set contains field-condition images with natural lighting, clutter, and occlusion.
+
+The important challenge is therefore NOT simply achieving very high accuracy on clean laboratory images.
+
+The important challenge is:
+
+**Generalisation from clean/lab images to real-world field images.**
+
+The held-out test set must NEVER be used for training.
+
+The primary evaluation metric is:
+
+**Macro-F1**
+
+The model report must also include:
+
+* Confusion matrix
+* Per-class precision
+* Per-class recall
+* Accuracy
+* Baseline comparison
+* Honest limitations
+
+The final system must expose a simple prediction interface such as:
+
+`predict(image_path) → class_label`
+
+or an equivalent documented CLI.
+
+---
+
+# 5. Overall Feature Scope
+
+Our final AgriSmart AI implementation will contain:
+
+## Mandatory Core
+
+### 1. Crop Disease Detection
+
+Computer Vision model for disease classification.
+
+---
+
+## Selected Bonus Modules
+
+### 2. Crop Recommendation
+
+Purpose:
+
+**“What crop should I grow?”**
+
+The system should recommend suitable crops using information such as:
+
+* Soil type
+* Soil pH
+* Temperature
+* Humidity
+* Rainfall
+* Water availability
+* Season
+* Location/context where appropriate
+* Previous crop
+
+The recommendation model must have a documented data source and evaluation/metric methodology.
+
+This corresponds to Bonus Module A in the problem statement.
+
+---
+
+### 3. Smart Irrigation
+
+Purpose:
+
+**“Does this crop need water now?”**
+
+Inputs may include:
+
+* Soil moisture
+* Weather forecast
+* Crop type
+* Growth stage
+
+Output should be something such as:
+
+* Irrigation Required
+* Irrigation Not Required
+* Delay Irrigation
+* Suggested irrigation guidance
+
+The system should clearly document the logic/model and validation method.
+
+This corresponds to Bonus Module B.
+
+---
+
+### 4. Weather-Based Intelligence
+
+Purpose:
+
+**“What should the farmer do because of the current/upcoming weather?”**
+
+This module should combine weather information with farm conditions.
+
+Examples:
+
+* Rain likely → delay irrigation
+* High humidity + crop disease risk → monitor crop closely
+* Extreme heat → provide heat-stress guidance
+* Heavy rain → provide relevant precaution
+
+The weather data source must be documented.
+
+This corresponds to Bonus Module C.
+
+---
+
+### 5. Sustainability Score
+
+Purpose:
+
+Provide an understandable indication of how sustainable the current farming situation is.
+
+The score can consider:
+
+* Water efficiency
+* Resource usage
+* Crop health
+* Irrigation efficiency
+* Other measurable farming factors
+
+The system should:
+
+1. Calculate a score.
+2. Explain why the score was given.
+3. Provide suggestions for improvement.
+4. Publish the exact formula/rules so the result is reproducible.
+
+This corresponds to Bonus Module D.
+
+---
+
+### 6. Farmer Assistant — Gemini
+
+A conversational AI assistant will be integrated using Gemini.
+
+The assistant should help the farmer understand:
+
+* Disease results
+* Crop recommendations
+* Irrigation recommendations
+* Weather-related recommendations
+* Sustainability score
+* General agriculture-related questions
+
+The assistant should NOT replace the core ML disease model.
+
+The disease model makes the disease prediction.
+
+The recommendation/analytics modules generate structured results.
+
+Gemini should then explain those results in simple farmer-friendly language.
+
+Example:
+
+**ML Model:**
+“Tomato Early Blight — confidence 0.91”
+
+**Gemini:**
+Explains what this means, what precautions to take, and how the farmer can respond.
+
+Grounded answers based on the system's actual data/results are preferred over unsupported free-form answers.
+
+Regional-language support may be considered where practical.
+
+---
+
+### 7. Agentic Advisor
+
+This is NOT simply another chatbot.
+
+The Agentic Advisor should act as a decision-making layer.
+
+It should:
+
+1. Collect available farm information.
+2. Analyse disease/crop/soil/weather information.
+3. Check relevant weather or system data.
+4. Reason about the situation.
+5. Decide whether an action is required.
+6. Generate a recommendation.
+7. Notify/display the recommendation to the farmer.
+8. Maintain a decision/history record where practical.
+
+The system should demonstrate an actual decision loop.
+
+Example:
+
+**Soil moisture low**
++
+**Rain probability high**
++
+**Crop requires water**
+
+→ Agent analyses conditions
+
+→ Checks weather
+
+→ Reasons that immediate irrigation may be unnecessary
+
+→ **Decision: Delay irrigation**
+
+→ Displays recommendation to farmer.
+
+The official problem statement specifically expects the agentic module to show its decision loop and at least one end-to-end automated recommendation.
+
+---
+
+# 6. Additional Innovation Features
+
+In addition to the official bonus modules above, we want to include selected crop-focused innovation features.
+
+These are additional innovations, not mandatory core requirements.
+
+## 8. Early Crop-Stress Warning
+
+The system should attempt to identify early signs of crop stress using available information such as:
+
+* Crop health
+* Disease prediction
+* Weather
+* Temperature
+* Humidity
+* Soil conditions
+* Other available farm data
+
+The output could be:
+
+**Low / Medium / High Stress Risk**
+
+along with the likely reason and suggested action.
+
+---
+
+## 9. AI Crop-Rotation Recommendation
+
+The system should analyse previous/current crops and recommend a suitable next crop or rotation strategy.
+
+The goal is to help:
+
+* Maintain soil health
+* Avoid repeatedly planting the same crop
+* Improve long-term farm sustainability
+* Reduce disease/pest-related risks where the available data supports it
+
+The recommendation should be explainable rather than simply producing an unexplained crop name.
+
+---
+
+## 10. Water-Consumption / Yield Prediction
+
+The system should provide predictive insights such as:
+
+* Estimated water requirement/consumption
+* Expected yield or yield range
+
+depending on the available dataset and validated modelling approach.
+
+The implementation should clearly distinguish between:
+
+**prediction based on a trained model**
+
+and
+
+**simple rule-based estimation.**
+
+Any claimed metric should correspond to an actual validation procedure.
+
+---
+
+# 7. Features We Are NOT Implementing
+
+## IoT — NOT INCLUDED
+
+We are intentionally skipping physical IoT/sensor hardware.
+
+Farmers will manually enter required information such as:
+
+* Soil moisture
+* Soil pH
+* Temperature
+* Humidity
+* Crop
+* Growth stage
+* Rain-related information
+
+The official problem statement allows simulated sensor feeds for IoT, but we are choosing not to implement the IoT bonus module because physical hardware is unnecessary for our project scope.
+
+---
+
+## GPS / Farm Mapping — NOT INCLUDED
+
+GPS-based farm mapping is also intentionally excluded.
+
+We do not want unnecessary Google Maps/API complexity.
+
+Location can remain a normal input/context field wherever required by a recommendation model.
+
+---
+
+# 8. Important Relationship Between Features
+
+The system should NOT treat every module as an isolated unrelated feature.
+
+They should work together.
+
+Example:
+
+### Step 1 — Farmer uploads leaf
+
+**Disease Detection**
+
+↓
+
+Tomato Early Blight
+Confidence: 91%
+
+↓
+
+### Step 2 — Farm information
+
+Crop: Tomato
+Growth Stage: Growing
+Soil Moisture: 31%
+Soil pH: 6.5
+Temperature: 30°C
+Humidity: 75%
+Rain Probability: High
+
+↓
+
+### Step 3 — Crop/Farm Intelligence
+
+Irrigation module analyses whether water is required.
+
+Weather module checks upcoming weather.
+
+Sustainability module evaluates resource efficiency.
+
+Stress module estimates crop stress.
+
+↓
+
+### Step 4 — Agentic Advisor
+
+The agent combines these results and determines an appropriate action.
+
+↓
+
+### Step 5 — Gemini Farmer Assistant
+
+Gemini explains the recommendation in simple language.
+
+Therefore, the final platform should feel like ONE intelligent agriculture system rather than ten disconnected mini-projects.
+
+---
+
+# 9. High-Level System Architecture
+
+The core disease pipeline should follow approximately:
+
+Leaf Image
+↓
+Image Preprocessing
+↓
+Trained Computer Vision Model
+↓
+Disease Classification
+↓
+Confidence Score
+↓
+Precaution / Recommendation Layer
+↓
+Frontend
+
+The complete platform should follow approximately:
+
+Farmer Input
++
+Leaf Image
++
+Farm Data
++
+Weather Data
+↓
+AI/ML Modules
+↓
+Disease Detection
++
+Crop Recommendation
++
+Irrigation Analysis
++
+Weather Intelligence
++
+Sustainability Analysis
++
+Crop Stress Analysis
++
+Crop Rotation
++
+Water/Yield Prediction
+↓
+Agentic Advisor
+↓
+Decision / Recommendation
+↓
+Gemini Farmer Assistant
+↓
+Farmer-Friendly Dashboard
+
+---
+
+# 10. Technology Stack
+
+The preferred technology stack is:
+
+## Frontend
+
+* React
+* JavaScript
+* Modern responsive UI
+* Clean farmer-friendly dashboard
+
+## Backend
+
+* Python
+* FastAPI
+* REST APIs
+
+## AI/ML
+
+* Python
+* PyTorch or TensorFlow
+* Computer Vision
+* Transfer Learning
+* CNN or suitable vision architecture
+* Scikit-learn where appropriate
+* Pandas / NumPy
+
+## Generative AI
+
+* Gemini API
+
+Gemini should primarily be used for explanation, conversational assistance, and intelligent interaction rather than replacing deterministic/validated ML models.
+
+## Weather
+
+Use a suitable weather API/source and clearly document it.
+
+## Database
+
+Use an appropriate database for:
+
+* User/farm information
+* Prediction history
+* Recommendations
+* Advisor decisions
+* Relevant application data
+
+The database choice should remain practical and not unnecessarily complicated.
+
+---
+
+# 11. Frontend Experience
+
+The final application should look like a real smart agriculture platform rather than a collection of ML notebooks.
+
+The dashboard should provide areas such as:
+
+* Disease Detection
+* Crop Recommendation
+* Irrigation
+* Weather Intelligence
+* Sustainability
+* Farmer Assistant
+* AI Advisor
+* Crop Stress
+* Crop Rotation
+* Water/Yield Prediction
+* History / Previous Analysis
+
+The interface should be:
+
+* Clean
+* Modern
+* Responsive
+* Farmer-friendly
+* Easy to understand
+* Clear about AI confidence and uncertainty
+
+The UI should avoid technical ML terminology wherever it is unnecessary.
+
+---
+
+# 12. Farmer Workflow
+
+A possible complete user journey:
+
+### 1. Farmer opens AgriSmart AI
+
+↓
+
+### 2. Enters basic farm information
+
+↓
+
+### 3. Uploads crop/leaf image
+
+↓
+
+### 4. Disease model analyses image
+
+↓
+
+### 5. System displays:
+
+Disease
+Confidence
+Basic precaution
+
+↓
+
+### 6. Farm/weather modules analyse additional conditions
+
+↓
+
+### 7. System displays:
+
+Crop recommendation
+Irrigation recommendation
+Weather action
+Sustainability score
+Crop stress warning
+Crop rotation suggestion
+Water/yield prediction
+
+↓
+
+### 8. Agentic Advisor analyses everything
+
+↓
+
+### 9. Advisor produces an actionable recommendation
+
+↓
+
+### 10. Gemini explains the recommendation in simple language
+
+↓
+
+### 11. Farmer can ask follow-up questions
+
+This should make the system feel like an intelligent farming advisor.
+
+---
+
+# 13. Backend Architecture
+
+The backend should be modular.
+
+A suggested structure is:
+
+backend/
+app/
+main.py
+api/
+disease.py
+crop.py
+irrigation.py
+weather.py
+sustainability.py
+assistant.py
+advisor.py
+stress.py
+rotation.py
+prediction.py
+
+```
+    services/
+        disease_service.py
+        crop_service.py
+        irrigation_service.py
+        weather_service.py
+        sustainability_service.py
+        gemini_service.py
+        agent_service.py
+        stress_service.py
+        rotation_service.py
+        prediction_service.py
+
+    models/
+    schemas/
+    utils/
+    config/
+
+model/
+    training/
+    inference/
+    weights/
+
+tests/
+```
+
+The exact structure may be adjusted if there is a technically better reason, but the project must remain modular and maintainable.
+
+---
+
+# 14. Expected API Structure
+
+Possible endpoints include:
+
+POST /api/disease/predict
+
+POST /api/crop/recommend
+
+POST /api/irrigation/analyze
+
+GET /api/weather
+
+POST /api/sustainability/score
+
+POST /api/assistant/chat
+
+POST /api/advisor/analyze
+
+POST /api/stress/analyze
+
+POST /api/rotation/recommend
+
+POST /api/prediction/water-yield
+
+These are architectural targets and may be adjusted during implementation if necessary.
+
+---
+
+# 15. Development Philosophy
+
+The project MUST NOT be built as one huge code dump.
+
+Development will happen incrementally.
+
+The AI developer must:
+
+1. Understand the complete project context first.
+2. Implement only the assigned phase.
+3. Run/test the implementation.
+4. Report problems.
+5. Fix issues.
+6. Verify that the phase works.
+7. Only then proceed to the next phase.
+
+Do NOT implement future modules prematurely.
+
+Do NOT randomly change the agreed architecture.
+
+Do NOT remove an existing working feature just to implement a new feature.
+
+Do NOT rewrite the entire project unless there is a genuine technical reason.
+
+---
+
+# 16. Development Priority
+
+The development priority is:
+
+### Phase 1
+
+Project foundation and architecture
+
+### Phase 2
+
+Core disease-detection ML model
+
+### Phase 3
+
+Disease prediction API
+
+### Phase 4
+
+Disease detection frontend
+
+### Phase 5
+
+Crop Recommendation
+
+### Phase 6
+
+Smart Irrigation + Weather Intelligence
+
+### Phase 7
+
+Sustainability Score
+
+### Phase 8
+
+Crop-focused innovation features:
+
+* Early Crop-Stress Warning
+* AI Crop-Rotation Recommendation
+* Water-Consumption / Yield Prediction
+
+### Phase 9
+
+Gemini Farmer Assistant
+
+### Phase 10
+
+Agentic Advisor
+
+### Final Phase
+
+Complete integration, testing, UI polishing, documentation, GitHub preparation and demo preparation.
+
+---
+
+# 17. Critical Development Rule
+
+The mandatory disease-detection model is the highest priority.
+
+Optional features must NEVER compromise:
+
+* Disease model performance
+* Dataset integrity
+* Evaluation correctness
+* Reproducibility
+* Project stability
+
+The official evaluation gives significant importance to the held-out core macro-F1 and reproducibility. Bonus modules are valuable only when they are actually functional and correctly implemented.
+
+Therefore:
+
+**Core quality > feature quantity.**
+
+---
+
+# 18. Evaluation & Hackathon Requirements
+
+The final project must be prepared for the SIH evaluation requirements.
+
+The official evaluation includes:
+
+* AI/ML Implementation — 25
+* Technical Implementation — 20
+* Innovation & Creativity — 15
+* Sustainability & Social Impact — 15
+* User Experience — 10
+* Problem Understanding — 10
+* Presentation & Demo — 5
+
+Total: 100 points.
+
+The core macro-F1 on the held-out test set is particularly important, and reproducibility is a scored gate.
+
+---
+
+# 19. GitHub & Reproducibility
+
+The final repository should contain:
+
+* README.md
+* Source code
+* Model/training/inference code
+* Model weights or an appropriate release/link
+* Requirements/environment file
+* Model report
+* Clear setup instructions
+* Demo video link
+* Architecture explanation
+* Dataset/source information
+* Metrics
+* Limitations
+
+A judge should be able to reproduce the core prediction quickly from the README.
+
+The official submission contract expects a public GitHub repository and clear reproducibility instructions, with the core prediction reproducible in approximately 10 minutes.
+
+---
+
+# 20. Originality & AI-Assisted Development
+
+Open-source libraries, pretrained models/backbones, and public datasets may be used where permitted, but their sources must be properly cited.
+
+Do not copy an entire public project/notebook.
+
+AI coding assistants may be used, but the resulting system must be genuinely developed, understood, tested, and reproducible.
+
+The repository should contain an appropriate originality declaration and third-party references where required.
+
+---
+
+# 21. Important AI Developer Instructions
+
+When developing this project, always follow these rules:
+
+### Rule 1
+
+Treat this document as the permanent project context.
+
+### Rule 2
+
+Do not forget the mandatory core disease detection requirement.
+
+### Rule 3
+
+Do not use Gemini as a replacement for the trained disease-detection model.
+
+### Rule 4
+
+Keep AI/ML predictions and GenAI explanations logically separated.
+
+### Rule 5
+
+Keep modules independent and modular.
+
+### Rule 6
+
+Do not train on the official held-out test set.
+
+### Rule 7
+
+Do not claim accuracy or performance without actual validation.
+
+### Rule 8
+
+Every predictive module should have a documented data source and evaluation methodology where applicable.
+
+### Rule 9
+
+The Agentic Advisor must contain a genuine decision-making loop, not simply a chatbot interface.
+
+### Rule 10
+
+Prefer reliable, explainable and reproducible implementations over unnecessarily complicated technology.
+
+### Rule 11
+
+Do not implement multiple future phases at once unless explicitly instructed.
+
+### Rule 12
+
+Before moving to the next phase, verify that the current phase works.
+
+---
+
+# 22. Final Vision
+
+The final AgriSmart AI system should behave like a unified intelligent agriculture advisor.
+
+A farmer should be able to provide basic farm information and a crop/leaf image, and the system should be able to:
+
+**Understand crop health → detect disease → analyse farming conditions → recommend suitable actions → evaluate irrigation → consider weather → estimate sustainability → detect possible crop stress → suggest crop rotation → predict water/yield insights → explain everything through Gemini → and use an Agentic Advisor to generate actionable decisions.**
+
+The final product should demonstrate that AI can help farmers make decisions that are:
+
+* More informed
+* More efficient
+* More sustainable
+* More understandable
+* More practical
+
+The project should remain focused on real agricultural usefulness rather than simply adding a large number of AI features.
+
+**Primary principle:**
+
+> Build a reliable disease-detection core first, then progressively transform it into a complete intelligent agriculture advisory platform.

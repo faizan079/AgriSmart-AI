@@ -1,0 +1,223 @@
+.tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.tab {
+  padding: 1rem 2rem;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #666;
+  transition: all 0.3s ease;
+}
+
+.tab:hover {
+  color: #4CAF50;
+}
+
+.tab.active {
+  color: #4CAF50;
+  border-bottom-color: #4CAF50;
+}
+
+.irrigation-card,
+.weather-card {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.form-group input,
+.form-group select {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #4CAF50;
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+}
+
+.result-card {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  color: white;
+}
+
+.result-card h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.status-indicator {
+  margin: 1rem 0;
+}
+
+.status {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.status.needed {
+  background: #ff6b6b;
+  color: white;
+}
+
+.status.not-needed {
+  background: #51cf66;
+  color: white;
+}
+
+.recommendation {
+  margin: 1rem 0;
+  line-height: 1.6;
+  font-size: 1.1rem;
+}
+
+.details {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.details p {
+  margin: 0.5rem 0;
+}
+
+.urgency {
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+}
+
+.urgency.high {
+  background: #ff6b6b;
+}
+
+.urgency.medium {
+  background: #ffd93d;
+  color: #333;
+}
+
+.urgency.low {
+  background: #51cf66;
+}
+
+.conditions {
+  margin: 1rem 0;
+  font-size: 1.1rem;
+}
+
+.risk {
+  margin: 1rem 0;
+  padding: 1rem;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.risk.high {
+  background: rgba(255, 107, 107, 0.3);
+  border: 1px solid #ff6b6b;
+}
+
+.risk.low {
+  background: rgba(81, 207, 102, 0.3);
+  border: 1px solid #51cf66;
+}
+
+.priority-actions {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background: rgba(255, 107, 107, 0.2);
+  border-radius: 6px;
+  border: 1px solid #ff6b6b;
+}
+
+.priority-actions h4 {
+  margin: 0 0 0.75rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.priority-actions ul {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.priority-actions li {
+  margin: 0.5rem 0;
+  font-weight: 600;
+}
+
+.urgent {
+  color: #ff6b6b;
+  font-weight: 700;
+}
+
+.recommendations {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.recommendations h4 {
+  margin: 0 0 0.75rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.recommendations ul {
+  margin: 0;
+  padding-left: 1.5rem;
+}
+
+.recommendations li {
+  margin: 0.5rem 0;
+  line-height: 1.5;
+}
+
+.alert {
+  padding: 1rem;
+  border-radius: 6px;
+  margin-top: 1rem;
+}
+
+.alert.error {
+  background: #fee;
+  color: #c33;
+  border: 1px solid #fcc;
+}

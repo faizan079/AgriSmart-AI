@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AgriSmart AI - Disease Detection</title>
+<style>
+  :root {
+    --green: #2e7d32;
+    --green-dark: #1b5e20;
+    --bg: #f4f8f3;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: #1a1a1a;
+    display: flex;
+    justify-content: center;
+    padding: 24px;
+  }
+  .card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    padding: 32px;
+    width: 100%;
+    max-width: 480px;
+  }
+  h1 { color: var(--green-dark); font-size: 1.5rem; margin-bottom: 4px; }
+  p.sub { color: #666; margin-top: 0; margin-bottom: 24px; font-size: 0.9rem; }
+  .upload-box {
+    border: 2px dashed #a5d6a7;
+    border-radius: 12px;
+    padding: 28px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  .upload-box:hover { border-color: var(--green); }
+  .upload-box img { max-width: 100%; max-height: 220px; border-radius: 8px; margin-top: 12px; }
+  input[type=file] { display: none; }
+  button {
+    width: 100%;
+    margin-top: 16px;
+    padding: 12px;
+    background: var(--green);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  button:disabled { background: #a5d6a7; cursor: not-allowed; }
+  .result {
+    margin-top: 20px;
+    padding: 16px;
+    border-radius: 10px;
+    background: #e8f5e9;
+    display: none;
+  }
+  .result.show { display: block; }
+  .result .label { font-weight: 600; color: var(--green-dark); font-size: 1.1rem; }
+  .result .conf { color: #444; margin: 6px 0; }
+  .result .precaution { font-size: 0.9rem; color: #333; }
+  @media (max-width: 400px) {
+    .card { padding: 20px; }
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <h1>🌱 AgriSmart AI</h1>
+    <p class="sub">Upload a leaf photo to detect disease</p>
+
+    <label class="upload-box" id="uploadBox">
+      <span id="uploadText">Tap to select a leaf image</span>
+      <img id="preview" style="display:none" />
+      <input type="file" id="fileInput" accept="image/*" />
+    </label>
+
+    <button id="submitBtn" disabled>Detect Disease</button>
+
+    <div class="result" id="result">
+      <div class="label" id="resLabel"></div>
+      <div class="conf" id="resConf"></div>
+      <div class="precaution" id="resPrecaution"></div>
+    </div>
+  </div>
+
+<script>
+  const fileInput = document.getElementById('fileInput');
+  const preview = document.getElementById('preview');
+  const uploadText = document.getElementById('uploadText');
+  const submitBtn = document.getElementById('submitBtn');
+  const result = document.getElementById('result');
+
+  let selectedFile = null;
+
+  fileInput.addEventListener('change', () => {
+    const file = fileInput.files[0];
+    if (!file) return;
+    selectedFile = file;
+    preview.src = URL.createObjectURL(file);
+    preview.style.display = 'block';
+    uploadText.style.display = 'none';
+    submitBtn.disabled = false;
+  });
+
+  submitBtn.addEventListener('click', async () => {
+    if (!selectedFile) return;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Analyzing...';
+
+    const formData = new FormData();
+    formData.append('file', selectedFile);
+
+    try {
+      // Point this to your running backend, e.g. http://localhost:8000
+      const res = await fetch('http://localhost:8000/api/disease/predict', {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await res.json();
+
+      document.getElementById('resLabel').textContent = data.class_label;
+      document.getElementById('resConf').textContent =
+        'Confidence: ' + (data.confidence * 100).toFixed(1) + '%';
+      document.getElementById('resPrecaution').textContent = data.precaution;
+      result.classList.add('show');
+    } catch (err) {
+      alert('Could not reach backend. Is the FastAPI server running?');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Detect Disease';
+    }
+  });
+</script>
+</body>
+</html>

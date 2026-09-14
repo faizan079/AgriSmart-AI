@@ -1,0 +1,31 @@
+# Python
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# Environment
+.env
+
+# ML
+model/weights/*.pt
+model/weights/*.pth
+data/
+
+# Node
+frontend/node_modules/
+frontend/dist/
+
+# Reports (generated)
+report/model_report.json
+report/model_report.md
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Legacy root scripts (moved to model/ and backend/)
+# Keep reference index.html at root optional
