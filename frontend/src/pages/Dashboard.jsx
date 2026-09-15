@@ -111,6 +111,14 @@ export default function Dashboard() {
           </Link>
         </div>
       </div>
+
+      {/* Promotional Value Statement Section */}
+      <div className="value-section">
+        <h2 className="value-title">💡 Intelligent Farming Platform</h2>
+        <p className="value-description">
+          Empowering farmers with AI-driven crop health insights, smart irrigation recommendations, sustainability analytics, and practical farming guidance.
+        </p>
+      </div>
     </div>
   )
 }
