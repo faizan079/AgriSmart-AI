@@ -6,12 +6,12 @@ from pydantic import BaseModel, Field
 
 class CropStressRequest(BaseModel):
     """Request schema for crop stress analysis"""
-    crop_type: str = Field(..., description="Crop type")
-    disease_status: str = Field(..., description="Current disease status (healthy, diseased)")
-    soil_moisture: float = Field(..., ge=0.0, le=100.0, description="Soil moisture percentage")
-    temperature: float = Field(..., description="Current temperature in Celsius")
-    humidity: float = Field(..., ge=0.0, le=100.0, description="Current humidity percentage")
-    growth_stage: str = Field(..., description="Growth stage (seedling, growing, mature)")
+    crop_type: str = Field(default="tomato", description="Crop type")
+    disease_status: str = Field(default="healthy", description="Current disease status (healthy, diseased)")
+    soil_moisture: float = Field(default=60.0, ge=0.0, le=100.0, description="Soil moisture percentage")
+    temperature: float = Field(default=25.0, description="Current temperature in Celsius")
+    humidity: float = Field(default=60.0, ge=0.0, le=100.0, description="Current humidity percentage")
+    growth_stage: str = Field(default="growing", description="Growth stage (seedling, growing, mature)")
     water_stress_indicators: str = Field(default="none", description="Visible water stress signs")
 
 
@@ -26,11 +26,11 @@ class CropStressResponse(BaseModel):
 
 class CropRotationRequest(BaseModel):
     """Request schema for crop rotation recommendation"""
-    current_crop: str = Field(..., description="Current crop being grown")
+    current_crop: str = Field(default="tomato", description="Current crop being grown")
     previous_crop: str = Field(default="", description="Previous crop grown")
-    soil_type: str = Field(..., description="Soil type")
-    soil_ph: float = Field(..., ge=0.0, le=14.0, description="Soil pH")
-    season: str = Field(..., description="Current season")
+    soil_type: str = Field(default="loamy", description="Soil type")
+    soil_ph: float = Field(default=6.5, ge=0.0, le=14.0, description="Soil pH")
+    season: str = Field(default="summer", description="Current season")
     pest_history: str = Field(default="none", description="Any pest issues in current crop")
 
 
@@ -45,12 +45,12 @@ class CropRotationResponse(BaseModel):
 
 class WaterYieldPredictionRequest(BaseModel):
     """Request schema for water and yield prediction"""
-    crop_type: str = Field(..., description="Crop type")
-    area_hectares: float = Field(..., ge=0.0, description="Area in hectares")
-    current_water_usage: float = Field(..., ge=0.0, description="Current water usage in liters")
-    soil_quality: str = Field(..., description="Soil quality (poor, moderate, good)")
-    weather_conditions: str = Field(..., description="Expected weather conditions")
-    irrigation_method: str = Field(..., description="Irrigation method (drip, sprinkler, flood)")
+    crop_type: str = Field(default="tomato", description="Crop type")
+    area_hectares: float = Field(default=1.0, ge=0.0, description="Area in hectares")
+    current_water_usage: float = Field(default=5000.0, ge=0.0, description="Current water usage in liters")
+    soil_quality: str = Field(default="moderate", description="Soil quality (poor, moderate, good)")
+    weather_conditions: str = Field(default="good", description="Expected weather conditions")
+    irrigation_method: str = Field(default="drip", description="Irrigation method (drip, sprinkler, flood)")
 
 
 class WaterYieldPredictionResponse(BaseModel):

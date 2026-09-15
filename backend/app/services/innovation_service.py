@@ -175,17 +175,126 @@ def recommend_crop_rotation(rotation_data: Dict) -> Dict:
     # Filter good followers based on season and soil
     suitable_crops = []
     for crop in rules["good_followers"]:
-        suitable_crops.append(crop)
+        # Filter based on soil type compatibility
+        soil_compatible = True
+        if soil_type == "clay" and crop in ["groundnut", "onion"]:
+            soil_compatible = False
+        elif soil_type == "sandy" and crop in ["rice", "sugarcane"]:
+            soil_compatible = False
+        elif soil_type == "black" and crop in ["groundnut", "onion"]:
+            soil_compatible = False
 
+        # Filter based on pH compatibility
+        ph_compatible = True
+        if soil_ph < 5.5 and crop in ["wheat", "maize", "cotton"]:
+            ph_compatible = False
+        elif soil_ph > 7.5 and crop in ["potato", "groundnut"]:
+            ph_compatible = False
+
+        # Filter based on season compatibility
+        season_compatible = True
+        if season == "winter" and crop in ["rice", "sugarcane", "groundnut"]:
+            season_compatible = False
+        elif season == "summer" and crop in ["wheat", "potato"]:
+            season_compatible = False
+
+        if soil_compatible and ph_compatible and season_compatible:
+            suitable_crops.append(crop)
+
+    # Create a deterministic scoring system based on input combinations
+    crop_scores = []
+    
+    # Create a hash of the input parameters for deterministic but varied results
+    input_hash = abs(hash(f"{current_crop}_{soil_type}_{soil_ph}_{season}"))
+    
+    for i, crop in enumerate(rules["good_followers"]):
+        score = 0
+        
+        # Avoid same crop
+        if crop == current_crop:
+            score -= 10
+            continue
+        
+        # Use the input hash to vary scoring - same inputs always give same result
+        score += (input_hash + i) % 5
+        
+        # Current crop specific prioritization
+        if current_crop == "rice":
+            if crop == "wheat": score += 3
+            elif crop == "maize": score += 2
+            elif crop == "groundnut": score += 2
+        elif current_crop == "wheat":
+            if crop == "maize": score += 3
+            elif crop == "groundnut": score += 2
+            elif crop == "cotton": score += 2
+        elif current_crop == "maize":
+            if crop == "wheat": score += 3
+            elif crop == "soybean": score += 2
+            elif crop == "groundnut": score += 2
+        elif current_crop == "cotton":
+            if crop == "wheat": score += 3
+            elif crop == "maize": score += 2
+            elif crop == "groundnut": score += 2
+        elif current_crop == "tomato":
+            if crop == "wheat": score += 3
+            elif crop == "maize": score += 2
+            elif crop == "groundnut": score += 2
+        elif current_crop == "groundnut":
+            if crop == "wheat": score += 3
+            elif crop == "maize": score += 2
+            elif crop == "cotton": score += 2
+        elif current_crop == "soybean":
+            if crop == "wheat": score += 3
+            elif crop == "maize": score += 2
+            elif crop == "cotton": score += 2
+        
+        # Soil type influence
+        if soil_type == "clay":
+            if crop in ["rice", "wheat", "cotton"]: score += 2
+        elif soil_type == "sandy":
+            if crop in ["groundnut", "soybean", "maize"]: score += 2
+        elif soil_type == "loamy":
+            if crop in ["wheat", "maize", "groundnut"]: score += 1
+        elif soil_type == "black":
+            if crop in ["cotton", "wheat", "maize"]: score += 2
+        
+        # Season influence
+        if season == "summer":
+            if crop in ["rice", "maize", "cotton"]: score += 2
+        elif season == "winter":
+            if crop in ["wheat", "mustard", "chickpea"]: score += 2
+        elif season == "monsoon":
+            if crop in ["rice", "groundnut"]: score += 2
+        elif season == "spring":
+            if crop in ["maize", "groundnut"]: score += 2
+        
+        # pH influence
+        if 6.0 <= soil_ph <= 7.0:
+            score += 1
+        elif soil_ph < 6.0:
+            if crop in ["potato", "groundnut"]: score += 2
+        elif soil_ph > 7.0:
+            if crop in ["wheat", "maize"]: score += 2
+        
+        crop_scores.append((crop, score))
+    
+    # Sort by score and select best
+    crop_scores.sort(key=lambda x: x[1], reverse=True)
+    
     # Avoid crops with pest history
-    if pest_history != "none":
-        # Simple logic: avoid same family crops if pest history exists
-        pass
-
+    if pest_history != "none" and previous_crop:
+        # Avoid crops from same family if pest history exists
+        if previous_crop in ["tomato", "potato", "brinjal"]:
+            # Nightshade family - avoid tomatoes, potatoes, brinjal
+            crop_scores = [(c, s) for c, s in crop_scores if c not in ["tomato", "potato", "brinjal"]]
+        elif previous_crop in ["groundnut", "soybean"]:
+            # Legume family - avoid other legumes
+            crop_scores = [(c, s) for c, s in crop_scores if c not in ["groundnut", "soybean"]]
+    
     # Select best recommendation
-    if suitable_crops:
-        recommended_next_crop = suitable_crops[0].title()
-        alternatives = [crop.title() for crop in suitable_crops[1:4]]
+    if crop_scores:
+        recommended_next_crop = crop_scores[0][0].title()
+        alternatives = [crop[0].title() for crop in crop_scores[1:4]]
     else:
         recommended_next_crop = "Wheat"  # Default safe option
         alternatives = ["Maize", "Groundnut"]

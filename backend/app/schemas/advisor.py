@@ -6,11 +6,11 @@ from pydantic import BaseModel, Field
 
 class AdvisorRequest(BaseModel):
     """Request schema for agentic advisor"""
-    crop_type: str = Field(..., description="Current crop type")
-    disease_status: str = Field(..., description="Disease detection result")
-    soil_moisture: float = Field(..., ge=0.0, le=100.0, description="Current soil moisture")
-    weather_forecast: str = Field(..., description="Weather forecast (good, moderate, poor)")
-    growth_stage: str = Field(..., description="Current growth stage")
+    crop_type: str = Field(default="tomato", description="Current crop type")
+    disease_status: str = Field(default="healthy", description="Disease detection result")
+    soil_moisture: float = Field(default=60.0, ge=0.0, le=100.0, description="Current soil moisture")
+    weather_forecast: str = Field(default="good", description="Weather forecast (good, moderate, poor)")
+    growth_stage: str = Field(default="growing", description="Current growth stage")
 
 
 class AdvisorResponse(BaseModel):

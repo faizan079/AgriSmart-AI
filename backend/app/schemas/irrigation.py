@@ -25,11 +25,11 @@ class IrrigationResponse(BaseModel):
 
 class WeatherRequest(BaseModel):
     """Request schema for weather intelligence"""
-    location: str = Field(..., description="Location for weather data")
-    current_temp: float = Field(..., description="Current temperature in Celsius")
-    current_humidity: float = Field(..., ge=0.0, le=100.0, description="Current humidity percentage")
+    location: str = Field(default="", description="Location for weather data")
+    current_temp: float = Field(default=25.0, description="Current temperature in Celsius")
+    current_humidity: float = Field(default=60.0, ge=0.0, le=100.0, description="Current humidity percentage")
     rainfall_expected: bool = Field(default=False, description="Is rainfall expected?")
-    wind_speed: float = Field(default=0.0, description="Wind speed in km/h")
+    wind_speed: float = Field(default=5.0, description="Wind speed in km/h")
 
 
 class WeatherResponse(BaseModel):
