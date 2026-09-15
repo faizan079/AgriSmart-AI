@@ -269,6 +269,19 @@
   .module-card p {
     font-size: 0.9rem;
   }
+
+  .value-section {
+    margin: 0 16px 32px;
+    padding: 24px 20px;
+  }
+
+  .value-title {
+    font-size: 1.3rem;
+  }
+
+  .value-description {
+    font-size: 0.92rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -345,4 +358,53 @@
     border-top: none;
     padding-top: 0;
   }
+
+  .value-section {
+    margin: 0 12px 24px;
+    padding: 20px 16px;
+    border-radius: 10px;
+  }
+
+  .value-title {
+    font-size: 1.15rem;
+    margin-bottom: 8px;
+  }
+
+  .value-description {
+    font-size: 0.88rem;
+    line-height: 1.5;
+  }
 }
+
+/* Value Section (Bottom Informational Banner) */
+.value-section {
+  background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+  border-radius: 12px;
+  padding: 32px 28px;
+  margin: 0 24px 48px;
+  box-shadow: 0 4px 12px rgba(46, 125, 50, 0.15);
+  text-align: left;
+}
+
+.value-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 12px 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  line-height: 1.3;
+}
+
+.value-description {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.92);
+  max-width: 800px;
+  margin: 0;
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+
